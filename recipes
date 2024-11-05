@@ -67,7 +67,7 @@ function before_install()
     fi
 
     # Download the YunoHost install script
-    INSTALL_SCRIPT="https://raw.githubusercontent.com/YunoHost/install_script/main/$DEBIAN_VERSION"
+    INSTALL_SCRIPT="https://raw.githubusercontent.com/YunoHost/install_script/trixie/$DEBIAN_VERSION"
     curl -L -s "$INSTALL_SCRIPT" -o install.sh
 
     # Disable the install of yunohost itself, because we need this for the core CI
@@ -118,7 +118,7 @@ function dev()
     install_gitlab_runner_light
 
     # Download and run the YunoHost install script
-    INSTALL_SCRIPT="https://raw.githubusercontent.com/YunoHost/install_script/main/$DEBIAN_VERSION"
+    INSTALL_SCRIPT="https://raw.githubusercontent.com/YunoHost/install_script/trixie/$DEBIAN_VERSION"
     curl -L -s "$INSTALL_SCRIPT" -o install.sh
     chmod +x install.sh
     ./install.sh -a -d "$RELEASE"
