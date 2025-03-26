@@ -133,7 +133,7 @@ def main():
     parser.add_argument(
         "variants",
         type=str,
-        choices=["build-and-lint", "before-install", "appci-only", "all", "demo"],
+        choices=["build-and-lint", "before-install", "appci-only", "core-tests-only", "all", "demo"],
     )
     args = parser.parse_args()
 
@@ -188,6 +188,12 @@ def main():
         builder.start(builder.image_alias("dev"))
         builder.run_script("appci")
         builder.publish("appci")
+
+    if args.variants == "core-tests-only":
+        # Start back from appci image
+        builder.start(builder.image_alias("appci"))
+        builder.run_script("core_tests")
+        builder.publish("core-tests")
 
     if args.variants == "demo":
         builder.start(builder.image_alias("before-install"))
