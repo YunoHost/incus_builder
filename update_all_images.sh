@@ -20,10 +20,11 @@ update_image() {
 
 for variant in build-and-lint before-install all; do
     # Bullseye
-    update_image bullseye stable "$variant"
-    update_image bullseye unstable "$variant"
-    update_image bullseye testing "$variant"
+    # update_image bullseye stable "$variant"
+    # update_image bullseye unstable "$variant"
+    # update_image bullseye testing "$variant"
 
+    # Bookworm
     update_image bookworm stable "$variant"
     update_image bookworm unstable "$variant"
     update_image bookworm testing "$variant"
