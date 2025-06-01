@@ -150,13 +150,23 @@ def main():
     else:
         logger.setLevel(logging.DEBUG)
 
-    logging.debug("Starting at %s", datetime.now())
-
-    builder = ImageBuilder(
-        args.debian_version, args.distribution, args.output, args.log
+    build_an_image(
+        args.debian_version, args.distribution, args.variants, args.log, args.output
     )
 
-    if args.variants == "build-and-lint":
+
+def build_an_image(
+    debian_version: str,
+    distribution: str,
+    variants: str,
+    logfile: Path,
+    output: Path,
+) -> None:
+    logging.debug("Starting at %s", datetime.now())
+
+    builder = ImageBuilder(debian_version, distribution, output, logfile)
+
+    if variants == "build-and-lint":
         builder.start()
         builder.put_file(
             SCRIPT_DIR / "gitlab-runner-light.deb", "/root/gitlab-runner-light.deb"
@@ -164,7 +174,7 @@ def main():
         builder.run_script("build_and_lint")
         builder.publish("build-and-lint")
 
-    if args.variants == "before-install":
+    if variants == "before-install":
         builder.start()
         builder.put_file(
             SCRIPT_DIR / "gitlab-runner-light.deb", "/root/gitlab-runner-light.deb"
@@ -172,7 +182,7 @@ def main():
         builder.run_script("before_install")
         builder.publish("before-install")
 
-    if args.variants == "all":
+    if variants == "all":
         builder.start()
         builder.put_file(
             SCRIPT_DIR / "gitlab-runner-light.deb", "/root/gitlab-runner-light.deb"
@@ -184,13 +194,13 @@ def main():
         builder.run_script("core_tests")
         builder.publish("core-tests")
 
-    if args.variants == "appci-only":
+    if variants == "appci-only":
         # Start back from dev image
         builder.start(builder.image_alias("dev"))
         builder.run_script("appci")
         builder.publish("appci")
 
-    if args.variants == "demo":
+    if variants == "demo":
         builder.start(builder.image_alias("before-install"))
         builder.run_script("demo")
         builder.publish("demo")
