@@ -29,6 +29,7 @@ class ImageBuilder:
     def start(self, base_image_name: Optional[str] = None) -> None:
         if base_image_name is None:
             base_image_name = f"images:debian/{self.debian_version}"
+            incus.image_download(base_image_name)
         self.clear()
         incus.launch(base_image_name, self.instance_name)
 
