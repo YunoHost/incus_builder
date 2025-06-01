@@ -88,8 +88,15 @@ class Incus:
         image_aliases = [alias["name"] for image in res for alias in image["aliases"]]
         return alias in image_aliases
 
+    def image_alias_exists(self, alias: str) -> bool:
+        res = yaml.safe_load(self._run("image", "alias", "list", "-f", "yaml"))
+        aliases = [alias["name"] for alias in res]
+        return alias in aliases
+
     def image_delete(self, alias: str) -> None:
         self._run("image", "delete", alias)
 
     def image_download(self, alias: str) -> None:
+        if self.image_alias_exists(alias):
+            self.image_delete(alias)
         self._run("image", "copy", alias, "local:")
