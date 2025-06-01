@@ -92,4 +92,4 @@ class Incus:
         self._run("image", "delete", alias)
 
     def image_download(self, alias: str) -> None:
-        self._run("image", "copy", "--copy-aliases", alias, "local:")
+        self._run("image", "copy", alias, "local:")
