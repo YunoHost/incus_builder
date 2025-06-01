@@ -35,8 +35,7 @@ def main() -> None:
         print(f"############### Building {debian} {distro} {variant}...")
         logfile = LOGS_DIR / f"{debian}_{distro}_{variant}.log"
         try:
-            # build_an_image(debian, distro, variant, logfile, args.output)
-            pass
+            build_an_image(debian, distro, variant, logfile, args.output)
         except Exception:
             print(f"Could not build image {debian} {distro} {variant}!")
             returncode = 1
