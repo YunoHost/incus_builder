@@ -15,13 +15,12 @@ incus = Incus()
 
 class ImageBuilder:
     def __init__(
-        self, debian_version: str, distribution: str, ss_repo: Path, log: Optional[Path]
+        self, debian_version: str, distribution: str, ss_repo: Path
     ) -> None:
         self.debian_version = debian_version
         self.distribution = distribution
         self.instance_name = f"ynh-builder-{self.debian_version}-{self.distribution}"
         self.ss_repo = ss_repo
-        self.log = log
 
     def image_alias(self, short_name: str) -> str:
         return f"yunohost/{self.debian_version}-{self.distribution}/{short_name}"
@@ -138,10 +137,15 @@ def main():
     )
     args = parser.parse_args()
 
+    build_an_image(
+        args.debian_version, args.distribution, args.variants, args.log, args.output
+    )
+
+def set_logger_file(logfile: Path | None) -> None:
     logger = logging.getLogger()
-    if args.log:
+    if logfile:
         logger.setLevel(logging.DEBUG)
-        fh = logging.FileHandler(args.log)
+        fh = logging.FileHandler(logfile)
         fh.setLevel(logging.DEBUG)
         logger.addHandler(fh)
         console = logging.StreamHandler()
@@ -150,21 +154,18 @@ def main():
     else:
         logger.setLevel(logging.DEBUG)
 
-    build_an_image(
-        args.debian_version, args.distribution, args.variants, args.log, args.output
-    )
-
 
 def build_an_image(
     debian_version: str,
     distribution: str,
     variants: str,
-    logfile: Path,
+    logfile: Path | None,
     output: Path,
 ) -> None:
+    set_logger_file(logfile)
     logging.debug("Starting at %s", datetime.now())
 
-    builder = ImageBuilder(debian_version, distribution, output, logfile)
+    builder = ImageBuilder(debian_version, distribution, output)
 
     if variants == "build-and-lint":
         builder.start()
