@@ -164,8 +164,8 @@ function core_tests()
             CORE_TESTS_APT_DEPENDENCIES+=(php8.2-cli mariadb-client mariadb-server)
             ;;
         trixie)
-            # We add php8.2-cli, mariadb-client and mariadb-server to the dependencies for test_app_resources
-            CORE_TESTS_APT_DEPENDENCIES+=(php8.2-cli mariadb-client mariadb-server)
+            # We add php8.4-cli, mariadb-client and mariadb-server to the dependencies for test_app_resources
+            CORE_TESTS_APT_DEPENDENCIES+=(php8.4-cli mariadb-client mariadb-server)
             ;;
     esac
 
