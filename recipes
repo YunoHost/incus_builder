@@ -171,7 +171,7 @@ function core_tests()
 
     apt_yes update
     apt_yes install "${CORE_TESTS_APT_DEPENDENCIES[@]}"
-    python3 -m pip install -U "${CORE_TESTS_PIP_DEPENCENDIES[@]}"
+    python3 -m pip install --break-system-packages -U "${CORE_TESTS_PIP_DEPENCENDIES[@]}"
 }
 
 function demo()
