@@ -9,6 +9,7 @@ from image_builder import build_an_image
 SCRIPT_DIR = Path(__file__).resolve().parent
 LOGS_DIR = SCRIPT_DIR / "logs"
 
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
