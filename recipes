@@ -151,9 +151,12 @@ function core_tests()
     CORE_TESTS_APT_DEPENDENCIES=(
         python3-pip python3-packaging python3-openssl
         python3-mock python3-requests-mock
-        python3-pytest python3-pytest-cov python3-pytest-mock python3-pytest-sugar
+        python3-pytest
     )
-    # CORE_TESTS_PIP_DEPENCENDIES=( )
+    CORE_TESTS_PIP_DEPENCENDIES=(
+        # Looks like we need sugar=1.x, pytest-cov=5.x
+        pytest-cov pytest-mock pytest-sugar
+    )
 
     case "$DEBIAN_VERSION" in
         bookworm)
@@ -168,7 +171,7 @@ function core_tests()
 
     apt_yes update
     apt_yes install "${CORE_TESTS_APT_DEPENDENCIES[@]}"
-    # python3 -m pip install -U "${CORE_TESTS_PIP_DEPENCENDIES[@]}"
+    python3 -m pip install -U "${CORE_TESTS_PIP_DEPENCENDIES[@]}"
 }
 
 function demo()
