@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import sys
 from pathlib import Path
 
 import yaml
@@ -42,7 +43,7 @@ def main() -> None:
             print(f"Could not build image {debian} {distro} {variant}!")
             returncode = 1
 
-    exit(returncode)
+    sys.exit(returncode)
 
 
 if __name__ == "__main__":

@@ -25,11 +25,11 @@ class Incus:
         raise RuntimeError(f"Unknown platform {plat}!")
 
     def _run(self, *args: str, **kwargs: Any) -> str:
-        command = ["incus"] + [*args]
+        command = ["incus", *args]
         return subprocess.check_output(command, **kwargs).decode("utf-8")
 
     def _run_logged_prefixed(self, *args: str, prefix: str = "", **kwargs) -> None:
-        command = ["incus"] + [*args]
+        command = ["incus", *args]
 
         process = subprocess.Popen(
             command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kwargs
