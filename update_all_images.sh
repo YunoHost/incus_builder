@@ -11,8 +11,8 @@ status=0
 update_image() {
     properties=("$@")
     logfile_name="$(
-                    IFS=_
-                            echo "${properties[*]}"
+        IFS=_
+        echo "${properties[*]}"
     )"
     echo "############### Building ${properties[*]}..."
     if ! "$SCRIPT_DIR/image_builder.py" -o "$REPO" "${properties[@]}" -l "$SCRIPT_DIR/logs/$logfile_name.log"; then
