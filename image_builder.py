@@ -4,9 +4,8 @@ import argparse
 import logging
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
-from incuslib import Incus, SimpleStreams
 
+from incuslib import Incus, SimpleStreams
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 
@@ -23,7 +22,7 @@ class ImageBuilder:
     def image_alias(self, short_name: str) -> str:
         return f"yunohost/{self.debian_version}-{self.distribution}/{short_name}"
 
-    def start(self, base_image_name: Optional[str] = None) -> None:
+    def start(self, base_image_name: str | None = None) -> None:
         if base_image_name is None:
             base_image_name = f"images:debian/{self.debian_version}"
             incus.image_download(base_image_name)

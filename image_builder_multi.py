@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 import argparse
-import yaml
 from pathlib import Path
+
+import yaml
 
 from image_builder import build_an_image
 

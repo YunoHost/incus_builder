@@ -5,6 +5,7 @@ import os
 import platform
 import subprocess
 from pathlib import Path
+from typing import Any
 
 import yaml
 
@@ -23,7 +24,7 @@ class Incus:
             return "armhf"
         raise RuntimeError(f"Unknown platform {plat}!")
 
-    def _run(self, *args: str, **kwargs) -> str:
+    def _run(self, *args: str, **kwargs: Any) -> str:
         command = ["incus"] + [*args]
         return subprocess.check_output(command, **kwargs).decode("utf-8")
 

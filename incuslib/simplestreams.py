@@ -24,7 +24,7 @@ class SimpleStreams:
 
         subprocess.run(
             ["incus-simplestreams", "add", image_file],
-            cwd=self.path,
+            check=True, cwd=self.path,
         )
         image_file.unlink()
 
@@ -60,5 +60,5 @@ class SimpleStreams:
                     sha = item["sha256"]
                     print(f"Pruning {product_name} / {sha}...")
                     subprocess.run(
-                        ["incus-simplestreams", "remove", sha], cwd=self.path
+                        ["incus-simplestreams", "remove", sha], check=True, cwd=self.path
                     )
