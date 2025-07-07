@@ -104,7 +104,7 @@ class ImageBuilder:
         incus.execute(self.instance_name, "rm", "/root/recipes")
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-o",

@@ -3,6 +3,7 @@
 import json
 import logging
 import subprocess
+from typing import Any
 from pathlib import Path
 
 from .incus import Incus
@@ -39,17 +40,17 @@ class SimpleStreams:
         ]
         return images
 
-    def images_data(self) -> dict:
+    def images_data(self) -> dict[str, Any]:
         images_file = self.path / "streams" / "v1" / "images.json"
         images_data = json.load(images_file.open(encoding="utf-8"))
-        return images_data
+        return images_data  # type: ignore
 
     def prune_images(self) -> None:
         images_dir: Path = self.path / "images"
 
         images = self.images_paths()
         for file in images_dir.iterdir():
-            if file not in images:
+            if file.name not in images:
                 logging.info(f"Pruning {file.name}...")
                 file.unlink()
 

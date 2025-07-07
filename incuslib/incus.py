@@ -26,9 +26,10 @@ class Incus:
 
     def _run(self, *args: str, **kwargs: Any) -> str:
         command = ["incus", *args]
-        return subprocess.check_output(command, **kwargs).decode("utf-8")
+        result: bytes = subprocess.check_output(command, **kwargs)
+        return result.decode("utf-8")
 
-    def _run_logged_prefixed(self, *args: str, prefix: str = "", **kwargs) -> None:
+    def _run_logged_prefixed(self, *args: str, prefix: str = "", **kwargs: Any) -> None:
         command = ["incus", *args]
 
         process = subprocess.Popen(
@@ -45,7 +46,7 @@ class Incus:
     def instance_stopped(self, name: str) -> bool:
         assert self.instance_exists(name)
         res = yaml.safe_load(self._run("info", name))
-        return res["Status"] == "STOPPED"
+        return str(res["Status"]) == "STOPPED"
 
     def instance_exists(self, name: str) -> bool:
         res = yaml.safe_load(self._run("list", "-f", "yaml"))
