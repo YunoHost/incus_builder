@@ -8,23 +8,18 @@ set -x
 export PIP_NO_CACHE_DIR=1
 export PIP_PROGRESS_BAR=off
 
-function apt_yes()
-{
+function apt_yes() {
     SUDO_FORCE_REMOVE=yes DEBIAN_FRONTEND=noninteractive \
         apt-get -y --no-install-recommends "$@"
 }
 
-
-function install_gitlab_runner_light()
-{
+function install_gitlab_runner_light() {
     # Needed to build and access artefacts on core CI ...
     apt_yes install /root/gitlab-runner-light.deb
     rm /root/gitlab-runner-light.deb
 }
 
-
-function build_and_lint()
-{
+function build_and_lint() {
     apt_yes update
     apt_yes upgrade
     install_gitlab_runner_light
@@ -54,9 +49,7 @@ function build_and_lint()
     python3 -m pip install -U "${TOOLING_PIP_DEPENDENCIES[@]}"
 }
 
-
-function before_install()
-{
+function before_install() {
     apt_yes update
     apt_yes upgrade
     install_gitlab_runner_light
@@ -93,9 +86,9 @@ function before_install()
     # start with a space (exclusively) . Then, we remove ",", then we remove the version specifiers "(>= X.Y)",
     # then we add simple quotes to packages when there is a pipe (or) 'php-mysql|php-mysqlnd'.
     deps="$(
-        sed -n '/^Depends:/,/^\w/{//!p}' yunohost_control | sed -e "s/,//g" -e "s/[(][^)]*[)]//g" -e "s/ | \S\+//g" | grep -v "moulinette\|ssowat\|yunohost-portal" ;
-        sed -n '/^Recommends:/,/^\w/{//!p}' yunohost_control | sed -e "s/,//g" -e "s/[(][^)]*[)]//g" -e "s/ | \S\+//g" | grep -v "yunohost-admin" ;
-        sed -n '/^Depends:/,/^\w/{//!p}' moulinette_control | sed -e "s/,//g" -e "s/[(][^)]*[)]//g" -e "s/ | \S\+//g" ;
+        sed -n '/^Depends:/,/^\w/{//!p}' yunohost_control | sed -e "s/,//g" -e "s/[(][^)]*[)]//g" -e "s/ | \S\+//g" | grep -v "moulinette\|ssowat\|yunohost-portal"
+        sed -n '/^Recommends:/,/^\w/{//!p}' yunohost_control | sed -e "s/,//g" -e "s/[(][^)]*[)]//g" -e "s/ | \S\+//g" | grep -v "yunohost-admin"
+        sed -n '/^Depends:/,/^\w/{//!p}' moulinette_control | sed -e "s/,//g" -e "s/[(][^)]*[)]//g" -e "s/ | \S\+//g"
         # Same as above, except that all dependencies are in the same line
         grep '^Depends:' ssowat_control | sed 's/Depends://' | sed -e "s/,//g" -e "s/[(][^)]*[)]//g" -e "s/ | \S\+//g"
     )"
@@ -111,8 +104,7 @@ function before_install()
     sed -i 's/worker_processes.*;/worker_processes 4;/g' /etc/nginx/nginx.conf
 }
 
-function dev()
-{
+function dev() {
     apt_yes update
     apt_yes upgrade
     install_gitlab_runner_light
@@ -125,8 +117,7 @@ function dev()
     rm install.sh
 }
 
-function appci()
-{
+function appci() {
     YUNO_PWD="SomeSuperStrongPassword"
     DOMAIN="domain.tld"
     SUBDOMAIN="sub.$DOMAIN"
@@ -142,8 +133,7 @@ function appci()
     yunohost domain add "$SUBDOMAIN"
 }
 
-function core_tests()
-{
+function core_tests() {
     # Reneable default password strength check
     sed -i '/admin_strength/d' /etc/yunohost/settings.yml
     sed -i '/user_strength/d' /etc/yunohost/settings.yml
@@ -174,8 +164,7 @@ function core_tests()
     python3 -m pip install --break-system-packages -U "${CORE_TESTS_PIP_DEPENCENDIES[@]}"
 }
 
-function demo()
-{
+function demo() {
     DOMAIN="demo.yunohost.org"
 
     INSTALL_SCRIPT="https://raw.githubusercontent.com/YunoHost/install_script/main/$DEBIAN_VERSION"
@@ -201,8 +190,7 @@ function demo()
     touch /etc/yunohost/keep_yunohost_api
 }
 
-function slimify()
-{
+function slimify() {
     apt_yes clean
 
     # Disable mandb because zzzzz: https://stackoverflow.com/questions/69974259/fully-disable-man-db
@@ -248,8 +236,7 @@ function slimify()
     systemctl -q disable yunoprompt --now || true
 
     # Ugly hack for demo
-    if [ -e /etc/yunohost/keep_yunohost_api ];
-    then
+    if [ -e /etc/yunohost/keep_yunohost_api ]; then
         rm /etc/yunohost/keep_yunohost_api
     else
         systemctl -q disable yunohost-api --now || true

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}")"  &> /dev/null && pwd)
 
 REPO="$1"
 
@@ -10,7 +10,10 @@ status=0
 
 update_image() {
     properties=("$@")
-    logfile_name="$(IFS=_ ; echo "${properties[*]}")"
+    logfile_name="$(
+                    IFS=_
+                            echo "${properties[*]}"
+    )"
     echo "############### Building ${properties[*]}..."
     if ! "$SCRIPT_DIR/image_builder.py" -o "$REPO" "${properties[@]}" -l "$SCRIPT_DIR/logs/$logfile_name.log"; then
         echo "Could not build image ${properties[*]}!"
