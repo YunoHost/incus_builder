@@ -13,7 +13,9 @@ incus = Incus()
 
 
 class ImageBuilder:
-    def __init__(self, debian_version: str, distribution: str, ss_repo: Path | None) -> None:
+    def __init__(
+        self, debian_version: str, distribution: str, ss_repo: Path | None
+    ) -> None:
         self.debian_version = debian_version
         self.distribution = distribution
         self.instance_name = f"ynh-builder-{self.debian_version}-{self.distribution}"
