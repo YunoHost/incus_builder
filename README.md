@@ -9,6 +9,8 @@ Also, the tool needs PyYaml so either install it in your distribution, or you ca
 
 ## How to use
 
+### Build a single image
+
 Run `./image_builder.py <version> <distribution> <variants>`.
 
 * The `version` is the Debian version, `bullseye` or `bookworm` (or `trixie` etc).
@@ -24,3 +26,13 @@ Run `./image_builder.py <version> <distribution> <variants>`.
 `appci-only` will only rebuild `appci` on top of the existing `dev` image.
 
 `build-and-lint` builds a "minimal" Debian image used by the core CI to build .debs, run black/flake/mypy linters etc. (meant for core CI)
+
+### Build multiple images at once
+
+You can use the script `image_builder_multi.py` to build multiple images at once.
+
+Write a configuration file, ee the file `config_example.yml` for reference, then run:
+
+```
+./image_builder_multi.py -c myconfig.yml -o output_repository
+```
