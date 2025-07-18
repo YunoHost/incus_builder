@@ -13,7 +13,7 @@ incus = Incus()
 
 
 class ImageBuilder:
-    def __init__(self, debian_version: str, distribution: str, ss_repo: Path) -> None:
+    def __init__(self, debian_version: str, distribution: str, ss_repo: Path | None) -> None:
         self.debian_version = debian_version
         self.distribution = distribution
         self.instance_name = f"ynh-builder-{self.debian_version}-{self.distribution}"
@@ -158,7 +158,7 @@ def build_an_image(
     distribution: str,
     variants: str,
     logfile: Path | None,
-    output: Path,
+    output: Path | None,
 ) -> None:
     set_logger_file(logfile)
     logging.debug("Starting at %s", datetime.now())
