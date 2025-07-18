@@ -1,0 +1,8 @@
+jobs:
+  bookworm:
+    stable: [ build-and-lint, before-install, all ]
+    unstable: [ build-and-lint, before-install, all ]
+    testing: [ build-and-lint, before-install, all ]
+
+  trixie:
+    unstable: [ build-and-lint, before-install, all ]
