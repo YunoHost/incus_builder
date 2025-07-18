@@ -1,3 +1,5 @@
+output: ./www
+
 jobs:
   bookworm:
     stable: [ build-and-lint, before-install, all ]

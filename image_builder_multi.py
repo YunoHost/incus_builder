@@ -25,7 +25,7 @@ def main() -> None:
     args = parser.parse_args()
 
     config = yaml.safe_load(args.config.open("r", encoding="utf-8"))
-    returncode = 0
+    output = args.output or config.get("output", None)
 
     jobs: list[tuple[str, str, str]] = [
         (debian, distro, variant)
@@ -34,11 +34,12 @@ def main() -> None:
         for variant in variants
     ]
 
+    returncode = 0
     for debian, distro, variant in jobs:
         print(f"############### Building {debian} {distro} {variant}...")
         logfile = LOGS_DIR / f"{debian}_{distro}_{variant}.log"
         try:
-            build_an_image(debian, distro, variant, logfile, args.output)
+            build_an_image(debian, distro, variant, logfile, output)
         except Exception:
             print(f"Could not build image {debian} {distro} {variant}!")
             returncode = 1
