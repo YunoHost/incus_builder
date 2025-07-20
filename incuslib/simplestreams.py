@@ -30,9 +30,9 @@ class SimpleStreams:
         )
         image_file.unlink()
 
-    def images_paths(self) -> list[str]:
+    def images_paths(self) -> list[Path]:
         images_data = self.images_data()
-        images = [
+        images: list[Path] = [
             self.path / item["path"]
             for product in images_data["products"].values()
             for version in product["versions"].values()
@@ -50,7 +50,7 @@ class SimpleStreams:
 
         images = self.images_paths()
         for file in images_dir.iterdir():
-            if file.name not in images:
+            if file not in images:
                 logging.info(f"Pruning {file.name}...")
                 file.unlink()
 
