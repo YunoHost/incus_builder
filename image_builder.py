@@ -143,6 +143,7 @@ def main() -> None:
 
 def set_logger_file(logfile: Path | None) -> None:
     logger = logging.getLogger()
+    logger.handlers = []
     if logfile:
         logger.setLevel(logging.DEBUG)
         fh = logging.FileHandler(logfile)
