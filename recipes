@@ -118,6 +118,9 @@ function dev() {
 }
 
 function appci() {
+    apt_yes update
+    apt_yes upgrade
+
     YUNO_PWD="SomeSuperStrongPassword"
     DOMAIN="domain.tld"
     SUBDOMAIN="sub.$DOMAIN"
@@ -165,6 +168,9 @@ function core_tests() {
 }
 
 function demo() {
+    apt_yes update
+    apt_yes upgrade
+
     DOMAIN="demo.yunohost.org"
 
     INSTALL_SCRIPT="https://raw.githubusercontent.com/YunoHost/install_script/main/$DEBIAN_VERSION"
