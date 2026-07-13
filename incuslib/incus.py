@@ -60,7 +60,7 @@ class Incus:
         self._run("stop", name)
 
     def instance_delete(self, name: str) -> None:
-        self._run("delete", name)
+        self._run("delete", name, "--force")
 
     def launch(self, image_name: str, instance_name: str) -> None:
         self._run("launch", image_name, instance_name)

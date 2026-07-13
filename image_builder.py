@@ -39,8 +39,6 @@ class ImageBuilder:
             return
 
         logging.info("Deleting existing container...")
-        if not incus.instance_stopped(self.instance_name):
-            incus.instance_stop(self.instance_name)
         incus.instance_delete(self.instance_name)
 
     def publish(self, short_name: str) -> None:
