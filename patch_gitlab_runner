@@ -2,23 +2,24 @@
 set -Eeuo pipefail
 set -x
 
-if [ ! -f "gitlab-runner.deb" ]; then
-    wget -O gitlab-runner.deb https://packages.gitlab.com/runner/gitlab-runner/debian/pool/bookworm/main/g/gitlab-runner/gitlab-runner_17.2.1-1_amd64.deb
-fi
+# Repack gitlab-runner without its dependency on the huge
+# gitlab-runner-helper-images, only needed by the docker/k8s executors.
 
-mkdir -p gitlab_runner
+VERSION="${1:-latest}"
+[[ $VERSION == "latest" ]] || VERSION="v${VERSION#v}"
+
+wget -O gitlab-runner.deb "https://gitlab-runner-downloads.s3.amazonaws.com/$VERSION/deb/gitlab-runner_amd64.deb"
+
+rm -rf gitlab_runner
+mkdir gitlab_runner
 pushd gitlab_runner
 
 ar x ../gitlab-runner.deb
-bunzip2 data.tar.bz2
-tar --delete -f data.tar ./usr/lib
-bunzip2 -z data.tar
 
 gzip -d control.tar.gz
-tar -xf control.tar ./md5sums
-sed -i '/lib\/gitlab-runner/d' md5sums
-tar -uf control.tar ./md5sums
-rm md5sums
+tar -xf control.tar ./control
+sed -i 's/gitlab-runner-helper-images[^,]*, //' control
+tar -uf control.tar ./control
 gzip control.tar
 
 ar rcv ../gitlab-runner-light.deb debian-binary control.tar.gz data.tar.bz2

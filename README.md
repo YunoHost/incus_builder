@@ -2,7 +2,8 @@
 
 ## Prepare workspace
 
-Before anything, run `./patch_gitlab_runner` to generate a small-ish gitlab runner debian package.
+Before anything, run `./patch_gitlab_runner` to generate a small-ish gitlab runner debian package
+(latest version by default, or pass a version: `./patch_gitlab_runner 19.1.1`).
 
 Also, the tool needs PyYaml so either install it in your distribution, or you can run
 `pdm install` to generate a relevant venv.
