@@ -31,7 +31,6 @@ function build_and_lint() {
         python3 python3-all python-is-python3 python3-pip
         python3-yaml python3-toml python3-jinja2 python3-openssl
     )
-    apt_yes install "${TOOLING_APT_DEPENDENCIES[@]}"
 
     # b) running tox, black, mypy, flake8, i18n string consistency check, bot sending PRs (actually this one is 'hub' in apt dependency right before)
     TOOLING_PIP_DEPENDENCIES=(
@@ -40,11 +39,19 @@ function build_and_lint() {
         types-requests types-PyYAML types-pyOpenSSL types-mock
     )
 
-    if [[ $DEBIAN_VERSION == "bullseye" ]]; then
-        TOOLING_PIP_DEPENDENCIES+=("tox==4.0.0" "black>=22.12" "packaging<22")
-    else
+    case "$DEBIAN_VERSION" in
+    trixie)
+        TOOLING_APT_DEPENDENCIES+=(tox black)
+        ;;
+    bookworm)
         TOOLING_PIP_DEPENDENCIES+=("tox>=4.17" "black>=24.4" --break-system-packages)
-    fi
+        ;;
+    bullseye)
+        TOOLING_PIP_DEPENDENCIES+=("tox==4.0.0" "black>=22.12" "packaging<22")
+        ;;
+    esac
+
+    apt_yes install "${TOOLING_APT_DEPENDENCIES[@]}"
 
     python3 -m pip install -U "${TOOLING_PIP_DEPENDENCIES[@]}"
 }
