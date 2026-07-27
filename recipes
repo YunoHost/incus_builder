@@ -42,6 +42,7 @@ function build_and_lint() {
     case "$DEBIAN_VERSION" in
     trixie)
         TOOLING_APT_DEPENDENCIES+=(tox black)
+        TOOLING_PIP_DEPENDENCIES+=(--break-system-packages)
         ;;
     bookworm)
         TOOLING_PIP_DEPENDENCIES+=("tox>=4.17" "black>=24.4" --break-system-packages)
