@@ -28,13 +28,9 @@ jobs:
           args: -i=4 -kp -sr -bn -ci -w .
         continue-on-error: true
 
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          base: ${{ github.head_ref }} # Creates pull request onto pull request or commit branch
-          branch: actions/auto-format
-          title: "${{ github.workflow }}"
-          commit-message: ":art: ${{ github.workflow }}"
-          body: |
-            This pull request uses [ruff](https://docs.astral.sh/ruff/) and [shfmt](https://github.com/patrickvane/shfmt).
+          commit-message: >
+            :art: Format code with [ruff](https://docs.astral.sh/ruff/)
+            and [shfmt](https://github.com/patrickvane/shfmt).
