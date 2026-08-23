@@ -13,9 +13,7 @@ incus = Incus()
 
 
 class ImageBuilder:
-    def __init__(
-        self, debian_version: str, distribution: str, ss_repo: Path | None
-    ) -> None:
+    def __init__(self, debian_version: str, distribution: str, ss_repo: Path | None) -> None:
         self.debian_version = debian_version
         self.distribution = distribution
         self.instance_name = f"ynh-builder-{self.debian_version}-{self.distribution}"
@@ -121,12 +119,8 @@ def main() -> None:
         help="If passed, logs will be printed to this file",
     )
 
-    parser.add_argument(
-        "debian_version", type=str, choices=["bullseye", "bookworm", "trixie"]
-    )
-    parser.add_argument(
-        "distribution", type=str, choices=["stable", "testing", "unstable"]
-    )
+    parser.add_argument("debian_version", type=str, choices=["bullseye", "bookworm", "trixie"])
+    parser.add_argument("distribution", type=str, choices=["stable", "testing", "unstable"])
     parser.add_argument(
         "variants",
         type=str,
@@ -134,9 +128,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    build_an_image(
-        args.debian_version, args.distribution, args.variants, args.log, args.output
-    )
+    build_an_image(args.debian_version, args.distribution, args.variants, args.log, args.output)
 
 
 def set_logger_file(logfile: Path | None) -> None:
@@ -168,25 +160,19 @@ def build_an_image(
 
     if variants == "build-and-lint":
         builder.start()
-        builder.put_file(
-            SCRIPT_DIR / "gitlab-runner-light.deb", "/root/gitlab-runner-light.deb"
-        )
+        builder.put_file(SCRIPT_DIR / "gitlab-runner-light.deb", "/root/gitlab-runner-light.deb")
         builder.run_script("build_and_lint")
         builder.publish("build-and-lint")
 
     if variants == "before-install":
         builder.start()
-        builder.put_file(
-            SCRIPT_DIR / "gitlab-runner-light.deb", "/root/gitlab-runner-light.deb"
-        )
+        builder.put_file(SCRIPT_DIR / "gitlab-runner-light.deb", "/root/gitlab-runner-light.deb")
         builder.run_script("before_install")
         builder.publish("before-install")
 
     if variants == "all":
         builder.start()
-        builder.put_file(
-            SCRIPT_DIR / "gitlab-runner-light.deb", "/root/gitlab-runner-light.deb"
-        )
+        builder.put_file(SCRIPT_DIR / "gitlab-runner-light.deb", "/root/gitlab-runner-light.deb")
         builder.run_script("dev")
         builder.publish("dev")
         builder.run_script("appci")

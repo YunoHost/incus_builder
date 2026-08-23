@@ -32,9 +32,7 @@ class Incus:
     def _run_logged_prefixed(self, *args: str, prefix: str = "", **kwargs: Any) -> None:
         command = ["incus", *args]
 
-        process = subprocess.Popen(
-            command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kwargs
-        )
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **kwargs)
         assert process.stdout
         with process.stdout:
             for line in iter(process.stdout.readline, b""):  # b'\n'-separated lines
@@ -70,19 +68,13 @@ class Incus:
         os.sync()
 
     def execute(self, instance_name: str, *args: str) -> None:
-        self._run_logged_prefixed(
-            "exec", instance_name, "--", *args, prefix=" In container |\t"
-        )
+        self._run_logged_prefixed("exec", instance_name, "--", *args, prefix=" In container |\t")
 
-    def publish(
-        self, instance_name: str, image_alias: str, properties: dict[str, str]
-    ) -> None:
+    def publish(self, instance_name: str, image_alias: str, properties: dict[str, str]) -> None:
         properties_list = [f"{key}={value}" for key, value in properties.items()]
         self._run("publish", instance_name, "--alias", image_alias, *properties_list)
 
-    def image_export(
-        self, image_alias: str, image_target: str, target_dir: Path
-    ) -> None:
+    def image_export(self, image_alias: str, image_target: str, target_dir: Path) -> None:
         self._run("image", "export", image_alias, image_target, cwd=target_dir)
 
     def image_exists(self, alias: str) -> bool:
