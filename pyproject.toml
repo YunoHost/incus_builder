@@ -12,29 +12,50 @@ dependencies = [
     "PyYAML>=6.0"
 ]
 
-
-[tool.pdm]
-distribution = false
-
-[tool.ruff.lint]
-select = [
-  "B",      # flake8-bugbear
-  "C4",     # Helps you write better list/set/dict comprehensions.
-  "E",      # pycodestyle errors
-  "FA",     # Verifies files use from __future__ import annotations if a type is used in the module that can be rewritten using PEP 563.
-  "F",      # pyflakes
-  "G",      # Better usage of built-in logging
-  "I",      # isort - Import sorting
-  "LOG",    # Checks for issues using the standard library logging module.
-  "PL",     # pylint
-  "PYI",    # Linting rules for type annotations.
-  "Q",      # Linting rules for quites
-  "RUF",    # Ruff lint
-  "TCH",    # Move type only imports to type-checking condition.
-  "TID",    # Helps you write tidier imports.
-  "UP",     # pyupgrade
-  "W",      # pycodestyle warnings
-  "SIM",    # flake8-simplify
+[dependency-groups]
+dev = [
+    "mypy",
+    "types-toml>=0.10",
+    "types-pyyaml>=6.0",
+    "ruff>=0.11.9",
 ]
 
-ignore = ["SIM112", "G004", "PLR2004", "W293", "W291", "PLR0913", "LOG015"]
+[tool.uv]
+package = true
+
+[tool.mypy]
+follow_imports = "normal"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+ignore_missing_imports = false
+strict = true
+
+[tool.ruff]
+line-length = 120
+select = ["ALL"]
+
+ignore = [
+    "C901",     # is too complex
+    "COM812",   # missing-trailing-comma
+    "CPY001",   # Missing copyright notice at top of file
+    "D",        # docstrings
+    "EM101",    # Exception must not use a string literal, assign to variable first
+    "EM102",    # Exception must not use an f-string literal, assign to variable first
+    "ERA001",   # Found commented-out code
+    "EXE001",   # Shebang is present but file is not executable
+    "FIX002",   # Line contains TODO, consider resolving the issue
+    "G004",     # Logging statement uses f-string
+    "LOG015",   # calls on root logger
+    "PLR",      # Code complexity
+    "RET504",   # Unnecessary assignment to `value` before `return` statement
+    "S101",     # Use of `assert` detected
+    "T201",     # `print` found
+    "TD",       # TODO format
+    "TRY003",   # Avoid specifying long messages outside the exception class
+    "TRY300",   # Consider moving this statement to an `else` block
+    "TRY400",   # Use `logging.exception` instead of `logging.error`
+]
+
+[tool.ty.rules]
+all = "error"
