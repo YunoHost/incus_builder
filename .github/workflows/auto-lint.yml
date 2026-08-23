@@ -11,17 +11,16 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: 3.11
-
-    - name: Install mypy
-      run: pip install mypy
-
     - name: Run Mypy
-      run: |
-        mypy --install-types --non-interactive --strict .
+      uses: jpetrucciani/mypy-check@master
+      with:
+        mypy_flags: --install-types --non-interactive
+        path: '.'
+
+    - name: Run Ruff on Python files
+      uses: astral-sh/ruff-action@v3
+      with:
+        args: "format"
 
   bash-lint:
     runs-on: ubuntu-latest
